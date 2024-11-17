@@ -41,8 +41,11 @@ const productBtns      = document.querySelectorAll('.wrapper__list-btn'),
       basketBtnCount   = document.querySelector('.warapper__navbar-count'),
       basketChecklist  = document.querySelector('.wrapper__navbar-checklist'),
       basketModal      = document.querySelector('.wrapper__navbar-basket'),
-      basketTotalPrice = document.querySelector('.wrapper__navbar-totalprice')
-
+      basketTotalPrice = document.querySelector('.wrapper__navbar-totalprice'),
+      basketBtn        = document.querySelector('.wrapper__navbar-bottom'),
+      printBody        = document.querySelector('.print__body'),
+      printFooter      = document.querySelector('.print__footer')
+      
 window.addEventListener('click', function (e) {
     if(
         e.target.offsetParent.className === 'wrapper__navbar-btn' ||
@@ -50,7 +53,8 @@ window.addEventListener('click', function (e) {
     ){
         basketModal.classList.toggle('active')
     }else if (basketModal.classList.contains('active') && 
-    e.target.className != 'wrapper__navbar-checklist'
+    e.target.className != 'wrapper__navbar-checklist' &&
+    e.target.className == 'wrapper__navbar-product'
     ){
         basketModal.classList.remove('active')
     }
@@ -125,14 +129,47 @@ function cardItemBurger(productData) {
         <img src="${img}" alt="" class="wrapper__navbar-productImage">
         <div>    
             <p class="wrapper__navbar-infoName">${name}</p>
-            <p class="wrapper__navbar-infoPrice">${price.toLocaleString()}</p>
+            <p class="wrapper__navbar-infoPrice">${price}</p>
         </div>
     </div>
-    <div class="wrapper__navbar-option">
-        <button class="wrapper__navbar-symbol fa-minus">-</button>
+    <div class="wrapper__navbar-option" id="${name.toLowerCase()}_card">
+        <button class="wrapper__navbar-symbol fa-minus" data-symbol="-">-</button>
         <output class="wrapper__navbar-count">${amount}</output>
-        <button class="wrapper__navbar-symbol fa-plus">+</button>
+        <button class="wrapper__navbar-symbol fa-plus" data-symbol="+">+</button>
     </div>
 </div>
 `
 }
+
+window.addEventListener('click', e => {
+    const btn = e.target
+    if(btn.classList.contains = "wrapper__navbar-symbol"){
+        const attr = btn.dataset.symbol
+        const parent = btn.closest('.wrapper__navbar-option')
+        if(parent){
+            const idProduct = parent.id.split('_')[0]
+            attr === '-' ? products[idProduct].amount-- : products[idProduct].amount++
+            basket()            
+        }
+    }
+})
+
+basketBtn.addEventListener('click', function () {
+    printBody.innerHTML = ''
+    for (const key in products) {
+        const {name, totalSumm:total, amount} = products[key]
+        if (amount) {
+            printBody.innerHTML += `
+            <div class="print__body-item">
+                <p class="print__body-item_name">
+                    <span>${name.toLocaleString()}</span>
+                    <span>${amount.toLocaleString()} pcs</span>
+                </p>
+                <p>${total.toLocaleString()}</p>
+            </div>
+            `
+        }
+    }
+    printFooter.innerHTML = `Total: ${totalSummProducts().toLocaleString()}`
+    window.print()
+})
