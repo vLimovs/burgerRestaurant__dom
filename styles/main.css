@@ -382,9 +382,10 @@ ol {
 }
 .print {
     display: none;
-    width: 200px;
+    width: 270px;
     flex-direction: column;
     align-items: center;
+    border: 2px dotted black;
 }
 .print__header {
     display: flex;
@@ -414,6 +415,6 @@ ol {
 
 .print__body-item span:nth-of-type(2) {
     padding: 10px 0;
-    border-bottom: 2px solid black;
-    width: 200px;
+    border-bottom: 2px dashed black;
+    width: 180px;
 }
