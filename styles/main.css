@@ -381,7 +381,7 @@ ol {
     background: var(--green);
 }
 .print {
-    display: flex;
+    display: none;
     width: 200px;
     flex-direction: column;
     align-items: center;
